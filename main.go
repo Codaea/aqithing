@@ -50,12 +50,31 @@ func main() {
 
 	// webserver for aqi
 	router := gin.Default()
-	router.GET("/aqi", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"aqi": aqi,
-		})
-	})
+	router.GET("/aqi", handle)
 	router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+func handle(c *gin.Context) {
+	var indexValue string
+	// calculate category
+	if aqi <= 50 {
+		indexValue = "Good"
+	} else if aqi <= 100 {
+		indexValue = "Moderate"
+	} else if aqi <= 150 {
+		indexValue = "Unhealthy for Sensitive Groups"
+	} else if aqi <= 200 {
+		indexValue = "Unhealthy"
+	} else if aqi <= 300 {
+		indexValue = "Very Unhealthy"
+	} else {
+		indexValue = "Hazardous"
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"aqi":      aqi,
+		"category": indexValue,
+	})
 }
 
 type Response struct {
