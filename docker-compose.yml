@@ -1,0 +1,8 @@
+services:
+  aqithing:
+    image: ghcr.io/codaea/aqithing:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - API_KEY=
+      - SENSOR_ID=
